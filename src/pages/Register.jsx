@@ -1,98 +1,58 @@
-import React from "react";
-
+import React, { useState } from "react";
+import {Lock, Mail, User } from "lucide-react";
 function Register() {
-  const handleSubmit = () => {};
+ const [form, setForm] = useState({username: "", email: "", password: ""});
+ const [message, setMessage] = useState("");
+  const handlechange = (e) => {
+    setForm({  ...form, [e.target.name]: e.target.value, });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(form);
+    try {
+      const payload = {
+        ...form,
+        role: "student",
+      };
+      const res = await fetch("https://lms-backend-xpwc.onrender.com/api/user/auth/",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log("Registration successful:", data);
+      }
+    } catch (error) {
+      
+    }
+  };
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-      <div class="rounded bg-gray-300">
-        <ol class="relative space-y-8 before:absolute before:top-0 before:left-1/2 before:h-full before:w-0.5 before:-translate-x-1/2 before:rounded-full before:bg-gray-200">
-          <li class="group relative grid grid-cols-2 odd:-me-3 even:-ms-3">
-            <div class="relative flex items-start gap-4 group-odd:flex-row-reverse group-odd:text-right group-even:order-last">
-              <span class="size-3 shrink-0 rounded-full bg-blue-600"></span>
-
-              <div class="-mt-2">
-                <time class="text-xs/none font-medium text-gray-700">
-                  12/02/2025
-                </time>
-
-                <h3 class="text-lg font-bold text-gray-900">Kickoff</h3>
-
-                <p class="mt-0.5 text-sm text-gray-700">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-                  officiis tempora ipsum adipisci tenetur sunt quae
-                  exercitationem sed pariatur porro!
-                </p>
-              </div>
-            </div>
-
-            <div aria-hidden="true"></div>
-          </li>
-
-          <li class="group relative grid grid-cols-2 odd:-me-3 even:-ms-3">
-            <div class="relative flex items-start gap-4 group-odd:flex-row-reverse group-odd:text-right group-even:order-last">
-              <span class="size-3 shrink-0 rounded-full bg-blue-600"></span>
-
-              <div class="-mt-2">
-                <time class="text-xs/none font-medium text-gray-700">
-                  5/03/2025
-                </time>
-
-                <h3 class="text-lg font-bold text-gray-900">First Milestone</h3>
-
-                <p class="mt-0.5 text-sm text-gray-700">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-                  officiis tempora ipsum adipisci tenetur sunt quae
-                  exercitationem sed pariatur porro!
-                </p>
-              </div>
-            </div>
-
-            <div aria-hidden="true"></div>
-          </li>
-
-          <li class="group relative grid grid-cols-2 odd:-me-3 even:-ms-3">
-            <div class="relative flex items-start gap-4 group-odd:flex-row-reverse group-odd:text-right group-even:order-last">
-              <span class="size-3 shrink-0 rounded-full bg-blue-600"></span>
-
-              <div class="-mt-2">
-                <time class="text-xs/none font-medium text-gray-700">
-                  24/04/2025
-                </time>
-
-                <h3 class="text-lg font-bold text-gray-900">Launch</h3>
-
-                <p class="mt-0.5 text-sm text-gray-700">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-                  officiis tempora ipsum adipisci tenetur sunt quae
-                  exercitationem sed pariatur porro!
-                </p>
-              </div>
-            </div>
-
-            <div aria-hidden="true"></div>
-          </li>
-        </ol>
-      </div>
-      <div className="rounded lg:col-span-2 ml-4 bg-white p-6 shadow-md">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
+      <div className="rounded"></div>
+      <div className="rounded bg-light-300 lg:col-span-2 shadow-md">
         <div  className="block rounded-md border border-gray-300 p-4 shadow-sm sm:p-6">
-        <div>
-          <h2>Create an Account</h2>
+        <div className="">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-xl text-center">Create an Account</h2>
         </div>
-        <form onSubmit={{ handleSubmit }}>
-          <div className="mb-4">
-            <label htmlFor="username">
-             <span class="text-sm font-medium text-gray-700"> Username </span>
-              <input type="text" id="username" class="mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm" />
-            </label>
+        <form onSubmit={handleSubmit} >
+          <div className="mb-4 relative">
+           
+              <User size={22} className=" text-gray-700 absolute left-3 bottom-2" /> 
+              <input type="text" name="username" onChange={handlechange}
+               id="username" placeholder="Enter your User Name"
+              className="mt-0.5 pl-10 pr-3 py-2 text-lg w-full rounded border-gray-300 shadow-sm sm:text-sm" />
+
           </div>
           <div>
-            <label htmlFor="Email">
-              <span class="text-sm font-medium text-gray-700"> Email </span>
-              <div className="relative mb-4">
+           <div className="relative mb-4">
+                 <Mail size={22} className=" text-gray-700 absolute left-3 bottom-2" /> 
                 <input
-                  type="email"
-                  id="Email"
-                  className="mt-0.5 w-full rounded border-gray-300 pe-8 shadow-sm"/>
+                  type="email" placeholder="Enter your email"
+                  id="Email" name="email" onChange={handlechange}
+                  className="mt-0.5 pl-10 pr-3 py-2 text-lg w-full rounded border-gray-300 shadow-sm sm:text-sm"/>
                   <span className="absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-700">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -110,26 +70,21 @@ function Register() {
                   </svg>
                 </span>
               </div>
-            </label>
           </div>
-          <div className="mb-4">
-            <label htmlFor="password">
-              <span class="text-sm font-medium text-gray-700"> Password </span>
-              <input type="password" id="password"class="mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm" />
-            </label>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="confirmPassword">
-             <span class="text-sm font-medium text-gray-700"> Confirm Password </span>
-              <input type="password" id="confirmPassword" class="mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm" />
-            </label>
+          <div className="mb-4 relative">
+           <Lock size={22} className=" text-gray-700 absolute left-3 bottom-2" />
+              <input type="password" id="password" onChange={handlechange}
+               placeholder="Enter your password" name="password"
+              className="mt-0.5 pl-10 pr-3 py-2 text-lg w-full rounded border-gray-300 shadow-sm sm:text-sm"/>
+           
           </div>
           <div>
-            <button type="submit"
-             class="inline-block rounded-sm border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden"
+            <button 
+             className="w-full inline-block rounded-sm border border-indigo-600 bg-indigo-600 px-12 py-2 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden"
             >Register</button>
           </div>
         </form>
+        {message && <p className="text-red-500 text-center mt-2">{message}</p>}
         <div>
           <p>
             Already have an account? <a href="/Login">Login here</a>.
@@ -142,6 +97,7 @@ function Register() {
         </div>
         </div>
       </div>
+      <div className="rounded"></div>
     </div>
     
   );
